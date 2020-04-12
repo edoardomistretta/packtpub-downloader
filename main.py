@@ -197,10 +197,28 @@ def main(argv):
     # get all your books
     books = get_books(user, is_verbose=verbose, is_quiet=quiet)
     print('Downloading books...')
+
+    books_to_ignore = [
+        'Angular Design Patterns',
+        'Continuous Delivery and DevOps - A Quickstart Guide - Third Edition',
+        'Hands-On Security in DevOps',
+        'Hands-On Server-Side Web Development with Swift',
+        'Hands-On Serverless Applications with Kotlin',
+        'Java EE 8 Design Patterns and Best Practices',
+        'Learning Concurrency in Kotlin',
+        'Machine Learning Algorithms',
+        'Mastering Java 11 - Second Edition',
+        'Microsoft System Center Data Protection Manager Cookbook'
+        ]
+
     if not quiet:
+        books = [book for book in books if book['productName'] not in books_to_ignore]
         books_iter = tqdm(books, unit='Book')
     else:
+        books = [book for book in books if book['productName'] not in books_to_ignore]
         books_iter = books
+
+
     for book in books_iter:
         # get the different file type of current book
         file_types = get_book_file_types(user, book['productId'])
